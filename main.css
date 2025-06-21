@@ -1,0 +1,295 @@
+html,
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #0f172a;
+      color: #e0e7ff;
+      scroll-behavior: smooth;
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    
+    ::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #60a5fa;
+    }
+    
+    nav a {
+      position: relative;
+      overflow: hidden;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: #3b82f6;
+      bottom: 0;
+      left: -100%;
+      transition: left 0.3s ease;
+    }
+    nav a:hover::after,
+    nav a.active::after {
+      left: 0;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      transition: background-position 0.5s ease;
+      background-size: 200% 100%;
+      background-position: left;
+    }
+    .btn-primary:hover {
+      background-position: right;
+    }
+    
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fadeInUp {
+      animation: fadeInUp 1s ease forwards;
+    }
+    
+    .card {
+      background: #1e293b;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgb(59 130 246 / 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgb(59 130 246 / 0.6);
+    }
+    
+    .section-title {
+      position: relative;
+      font-weight: 700;
+      font-size: 1.875rem; /* 3xl */
+      margin-bottom: 1rem;
+      color: #3b82f6;
+    }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background: #3b82f6;
+      bottom: -8px;
+      left: 0;
+      border-radius: 2px;
+    }
+    
+    .skill-bar {
+      background: #334155;
+      border-radius: 9999px;
+      overflow: hidden;
+      height: 12px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      background: #3b82f6;
+      width: 0;
+      border-radius: 9999px;
+      animation-fill-mode: forwards;
+    }
+    .animate-skill {
+      animation: fillSkill 2s ease forwards;
+    }
+    @keyframes fillSkill {
+      from {
+        width: 0;
+      }
+      to {
+        width: var(--skill-width);
+      }
+    }
+    
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  justify-items: center;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.circle-skill {
+  width: 160px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.circle-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+circle.bg {
+  fill: none;
+  stroke: #334155;
+  stroke-width: 10;
+}
+
+circle.progress {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  transition: stroke-dashoffset 2s ease;
+}
+
+.percent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #bfdbfe; 
+}
+
+.label {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #bfdbfe;
+  line-height: 1.2;
+}
+    
+    footer a:hover {
+      color: #60a5fa;
+    }
+    
+    #menu-toggle:checked + #menu {
+      max-height: 500px;
+    }
+    #menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: #0f172a;
+      border-top: 2px solid #3b82f6;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3b82f6 #1e293b;
+      z-index: 60;
+      padding-left: 12px;
+      padding-right: 12px;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+    #taskbar::-webkit-scrollbar {
+      height: 6px;
+    }
+    #taskbar::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    #taskbar::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 10px;
+    }
+    #taskbar::-webkit-scrollbar-thumb:hover {
+      background: #60a5fa;
+    }
+    .taskbar-btn {
+      flex: 0 0 auto;
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 6px 14px;
+      color: #a5b4fc;
+      font-weight: 600;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 0 8px rgb(59 130 246 / 0.3);
+      text-decoration: none;
+    }
+    .taskbar-btn:hover,
+    .taskbar-btn.active {
+      background: #3b82f6;
+      color: white;
+      box-shadow: 0 0 12px rgb(59 130 246 / 0.8);
+    }
+    
+    #page-container {
+      min-height: calc(100vh - 56px);
+      padding-bottom: 56px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    .page {
+      display: none;
+      padding: 2rem 1.5rem 4rem 1.5rem;
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeInPage 0.6s ease forwards;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fadeInPage {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }   
+    @media (min-width: 768px) {
+      #page-container {
+        padding-left: 3rem;
+        padding-right: 3rem;
+      }
+      .page {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
